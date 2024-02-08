@@ -2,7 +2,6 @@ import { ChevronDown } from 'lucide-react'
 import { Helmet } from 'react-helmet-async'
 
 import { PageHeader } from '@/components/page-header'
-import { Button } from '@/components/ui/button'
 import {
   Collapsible,
   CollapsibleContent,
@@ -10,6 +9,7 @@ import {
 } from '@/components/ui/collapsible'
 import { Separator } from '@/components/ui/separator'
 
+import { CreateProjectDialog } from './components/create-project-dialog'
 import { ProjectCard } from './components/project-card'
 
 export function ProjectsPage() {
@@ -26,7 +26,7 @@ export function ProjectsPage() {
         <div className="flex flex-col gap-4">
           <div className="flex flex-row items-center justify-between">
             <h2 className="text-lg font-medium">Projetos ativos</h2>
-            <Button variant="outline">Criar projeto</Button>
+            <CreateProjectDialog />
           </div>
 
           {Array.from({ length: 5 }).map((_, index) => (
