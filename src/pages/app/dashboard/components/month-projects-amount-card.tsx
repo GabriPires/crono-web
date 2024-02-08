@@ -11,7 +11,7 @@ export function MonthProjectsAmountCard() {
   }
 
   return (
-    <Card>
+    <Card className="min-w-72">
       <CardHeader className="flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-base font-semibold">
           Projetos (mês)

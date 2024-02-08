@@ -19,7 +19,7 @@ export function DashboardPage() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-4 gap-4">
+        <div className="flex lg:grid lg:grid-cols-4 gap-4 overflow-auto lg:overflow-hidden">
           <MonthProjectsAmountCard />
           <DaysWorkedAmountCard />
           <HoursWorkedAmountCard />
