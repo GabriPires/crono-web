@@ -1,4 +1,4 @@
-import { AlarmClockCheck, Home } from 'lucide-react'
+import { AlarmClockCheck, Briefcase, Home } from 'lucide-react'
 
 import { AccountMenu } from './account-menu'
 import { NavLink } from './nav-link'
@@ -16,6 +16,10 @@ export function Header() {
           <NavLink to="/">
             <Home className="h-4 w-4" />
             Início
+          </NavLink>
+          <NavLink to="/projects">
+            <Briefcase className="h-4 w-4" />
+            Projetos
           </NavLink>
         </nav>
 

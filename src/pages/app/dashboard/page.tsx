@@ -1,5 +1,7 @@
 import { Helmet } from 'react-helmet-async'
 
+import { PageHeader } from '@/components/page-header'
+
 import { DaysWorkedAmountCard } from './components/days-worked-card'
 import { HoursWorkedAmountCard } from './components/hours-worked-card'
 import { MonthProjectsAmountCard } from './components/month-projects-amount-card'
@@ -11,13 +13,10 @@ export function DashboardPage() {
       <Helmet title="Dashboard" />
 
       <div className="flex flex-col gap-4">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Olá, John Doe</h1>
-          <h2 className="tracking-tight">
-            Quais objetivos vamos alcançar hoje?{' '}
-            <span className="text-gray-500">👋</span>
-          </h2>
-        </div>
+        <PageHeader
+          title="Dashboard"
+          subtitle="Veja o desempenho do seu mês."
+        />
 
         <div className="flex lg:grid lg:grid-cols-4 gap-4 overflow-auto lg:overflow-hidden">
           <MonthProjectsAmountCard />
