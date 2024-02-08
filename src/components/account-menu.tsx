@@ -1,4 +1,4 @@
-import { Building, ChevronDown, LogOut } from 'lucide-react'
+import { Contact, LogOut, User } from 'lucide-react'
 
 import { Button } from './ui/button'
 import { Dialog, DialogTrigger } from './ui/dialog'
@@ -18,10 +18,10 @@ export function AccountMenu() {
         <DropdownMenuTrigger asChild>
           <Button
             variant="outline"
+            size="icon"
             className="flex select-none items-center gap-2"
           >
-            John Doe
-            <ChevronDown className="h-4 w-4" />
+            <User className="size-5" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-56">
@@ -45,7 +45,7 @@ export function AccountMenu() {
 
           <DialogTrigger asChild>
             <DropdownMenuItem>
-              <Building className="mr-2 h-4 w-4" />
+              <Contact className="mr-2 h-4 w-4" />
               <span>Seu Perfil</span>
             </DropdownMenuItem>
           </DialogTrigger>
