@@ -2,7 +2,7 @@ import { AlarmClockCheck, Briefcase, Home } from 'lucide-react'
 
 import { AccountMenu } from './account-menu'
 import { NavLink } from './nav-link'
-import { ThemeToggle } from './theme/theme-toggle'
+import { TimeTracker } from './time-tracker/time-tracker'
 import { Separator } from './ui/separator'
 
 export function Header() {
@@ -24,7 +24,7 @@ export function Header() {
         </nav>
 
         <div className="ml-auto flex items-center gap-2">
-          <ThemeToggle />
+          <TimeTracker />
           <AccountMenu />
         </div>
       </div>

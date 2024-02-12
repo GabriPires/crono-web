@@ -52,7 +52,7 @@ export function AccountMenu() {
 
           <DropdownMenuItem
             asChild
-            className="text-rose-500 dark:text-red-400"
+            className="text-rose-500 dark:text-rose-400"
             // disabled={isSigninOut}
           >
             <button className="w-full" onClick={() => console.log()}>
