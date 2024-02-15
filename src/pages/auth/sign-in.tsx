@@ -1,48 +1,46 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useMutation } from '@tanstack/react-query'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
-import { Link, useSearchParams } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
+import { authenticate } from '@/api/user/authenticate'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
 const signInFormSchema = z.object({
   email: z.string().email(),
+  password: z
+    .string()
+    .min(6, { message: 'Senha deve ter no mínimo 6 caracteres.' }),
 })
 
 type SignInForm = z.infer<typeof signInFormSchema>
 
 export function SignInPage() {
   const [searchParams] = useSearchParams()
+  const navigate = useNavigate()
 
-  const {
-    register,
-    handleSubmit,
-    formState: { isSubmitting },
-  } = useForm<SignInForm>({
+  const { register, handleSubmit } = useForm<SignInForm>({
     resolver: zodResolver(signInFormSchema),
     defaultValues: {
       email: searchParams.get('email') ?? '',
     },
   })
 
-  // const { mutateAsync: authenticate } = useMutation({
-  //   mutationFn: signIn,
-  // })
+  const { mutateAsync: signIn, isPending: isLoadingSignIn } = useMutation({
+    mutationFn: authenticate,
+  })
 
   async function handleSignIn(data: SignInForm) {
     try {
-      console.log(data)
+      await signIn(data)
 
-      toast.success('Enviamos um link de autenticação para seu e-mail.', {
-        action: {
-          label: 'Reenviar e-mail',
-          onClick: () => handleSignIn(data),
-        },
-      })
+      toast.success('Bem vindo!')
+      navigate('/')
     } catch (error) {
       toast.error('Credenciais inválidas.')
     }
@@ -68,10 +66,15 @@ export function SignInPage() {
           <form className="space-y-4" onSubmit={handleSubmit(handleSignIn)}>
             <div className="space-y-2">
               <Label htmlFor="email">Seu e-mail</Label>
-              <Input type="email" {...register('email')} />
+              <Input id="email" type="email" {...register('email')} />
             </div>
 
-            <Button type="submit" disabled={isSubmitting} className="w-full">
+            <div className="space-y-2">
+              <Label htmlFor="password">Senha</Label>
+              <Input id="password" type="password" {...register('password')} />
+            </div>
+
+            <Button type="submit" disabled={isLoadingSignIn} className="w-full">
               Acessar painel
             </Button>
           </form>

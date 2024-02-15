@@ -14,11 +14,12 @@ export function AppLayout() {
       (error) => {
         if (isAxiosError(error)) {
           const status = error.response?.status
-          const code = error.response?.data?.code
 
-          if (status === 401 && code === 'UNAUTHORIZED') {
+          if (status === 401) {
             navigate('/sign-in', { replace: true })
           }
+        } else {
+          throw error
         }
       },
     )
