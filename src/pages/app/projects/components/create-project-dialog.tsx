@@ -1,7 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useRef } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
+import { createProject } from '@/api/projects/create-project'
+import { Project } from '@/api/projects/get-user-projects'
 import { FormControl } from '@/components/form/form-control'
 import { Button } from '@/components/ui/button'
 import {
@@ -20,7 +25,7 @@ import { currencyInputMask } from '@/utils/currency-input-mask'
 
 const createProjectFormSchema = z.object({
   title: z.string().min(1, { message: 'Título é obrigatório.' }),
-  description: z.string().optional(),
+  description: z.string(),
   hourlyRate: z.coerce
     .number()
     .positive({ message: 'Valor por hora deve ser positivo.' }),
@@ -29,6 +34,10 @@ const createProjectFormSchema = z.object({
 type CreateProjectFormValues = z.infer<typeof createProjectFormSchema>
 
 export function CreateProjectDialog() {
+  const closeButtonRef = useRef<HTMLButtonElement>(null)
+
+  const queryClient = useQueryClient()
+
   const {
     control,
     register,
@@ -44,8 +53,25 @@ export function CreateProjectDialog() {
     },
   })
 
-  async function handleCreateProject(values: CreateProjectFormValues) {
-    console.log(values)
+  const { mutateAsync: createProjectFn } = useMutation({
+    mutationFn: createProject,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['user-projects'],
+      })
+      closeButtonRef.current?.click()
+      toast.success('Projeto criado com sucesso')
+    },
+    onError: () => {
+      toast.error('Erro ao criar novo projeto, tente novamente mais tarde')
+    },
+  })
+
+  async function handleCreateProject({
+    title,
+    description,
+  }: CreateProjectFormValues) {
+    await createProjectFn({ name: title, description })
   }
 
   return (
@@ -101,7 +127,9 @@ export function CreateProjectDialog() {
 
           <div className="flex flex-row items-center justify-end gap-4">
             <DialogClose asChild>
-              <Button variant="outline">Cancelar</Button>
+              <Button ref={closeButtonRef} variant="outline">
+                Cancelar
+              </Button>
             </DialogClose>
             <Button type="submit">Criar projeto</Button>
           </div>

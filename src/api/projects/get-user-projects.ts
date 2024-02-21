@@ -6,6 +6,7 @@ export type Project = {
   description: string
   createdAt: string
   userId: string
+  isArchived: boolean
 }
 
 interface GetUserProjectsResponse {

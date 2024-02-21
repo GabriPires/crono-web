@@ -18,7 +18,7 @@ export function DashboardPage() {
           subtitle="Veja o desempenho do seu mês."
         />
 
-        <div className="flex lg:grid lg:grid-cols-4 gap-4 overflow-auto lg:overflow-hidden">
+        <div className="flex lg:grid lg:grid-cols-2 xl:grid-cols-4 gap-4 overflow-auto lg:overflow-hidden">
           <MonthProjectsAmountCard />
           <DaysWorkedAmountCard />
           <HoursWorkedAmountCard />

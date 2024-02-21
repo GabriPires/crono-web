@@ -1,6 +1,7 @@
 import { Briefcase } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
+import { Project } from '@/api/projects/get-user-projects'
 import {
   Card,
   CardDescription,
@@ -9,21 +10,23 @@ import {
 } from '@/components/ui/card'
 
 interface ProjectCardProps {
-  projectId: string
+  project: Project
   archived?: boolean
 }
 
-export function ProjectCard({ projectId, archived }: ProjectCardProps) {
+export function ProjectCard({ project, archived }: ProjectCardProps) {
   return (
-    <Link to={`/projects/${projectId}`}>
+    <Link to={`/projects/${project.id}`}>
       <Card
         data-archived={archived}
         className="data-[archived=true]:opacity-55"
       >
         <CardHeader className="flex-row justify-between">
           <div className="flex flex-col gap-1.5">
-            <CardTitle>Project Title</CardTitle>
-            <CardDescription>Project Description</CardDescription>
+            <CardTitle>{project.name}</CardTitle>
+            {project.description.length > 0 && (
+              <CardDescription>{project.description}</CardDescription>
+            )}
           </div>
           <Briefcase className="size-5" />
         </CardHeader>
