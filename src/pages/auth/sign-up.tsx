@@ -1,18 +1,22 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useMutation } from '@tanstack/react-query'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
+import { signUp } from '@/api/user/register'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
 const signUpFormSchema = z.object({
   name: z.string().min(1, { message: 'Digite um nome' }),
-  phone: z.string().min(11, { message: 'Digite um número de celular válido' }),
   email: z.string().email(),
+  password: z
+    .string()
+    .min(6, { message: 'Digite uma senha com no mínimo 6 caracteres' }),
 })
 
 type SignUpForm = z.infer<typeof signUpFormSchema>
@@ -28,14 +32,22 @@ export function SignUpPage() {
     resolver: zodResolver(signUpFormSchema),
   })
 
-  async function handleSignUp(data: SignUpForm) {
+  const { mutateAsync: signUpFn } = useMutation({
+    mutationFn: signUp,
+  })
+
+  async function handleSignUp({ name, email, password }: SignUpForm) {
     try {
-      console.log(data)
+      await signUpFn({
+        name,
+        email,
+        password,
+      })
 
       toast.success('Cadastro efetuado com sucesso.', {
         action: {
-          label: 'Login',
-          onClick: () => navigate(`/sign-in?email=${data.email}`),
+          label: 'Continuar para o login',
+          onClick: () => navigate(`/sign-in?email=${email}`),
         },
       })
     } catch (error) {
@@ -63,18 +75,18 @@ export function SignUpPage() {
 
           <form className="space-y-4" onSubmit={handleSubmit(handleSignUp)}>
             <div className="space-y-2">
-              <Label htmlFor="email">Seu nome</Label>
-              <Input type="text" {...register('name')} />
+              <Label htmlFor="name">Seu nome</Label>
+              <Input id="name" type="text" {...register('name')} />
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="email">Seu e-mail</Label>
-              <Input type="email" {...register('email')} />
+              <Input id="email" type="email" {...register('email')} />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="email">Seu celular</Label>
-              <Input type="tel" {...register('phone')} />
+              <Label htmlFor="password">Sua senha</Label>
+              <Input id="password" type="password" {...register('password')} />
             </div>
 
             <Button type="submit" disabled={isSubmitting} className="w-full">
